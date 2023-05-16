@@ -1,0 +1,84 @@
+polymorphism -> many forms
+static polymorphism- complile time 
+dynamic polymorphism - runtime
+
+funtion overloading
+is a type of static polymorphism
+it happens in the same class
+same name differennt signatures 
+only object can call
+
+function overriding
+is a type of dymanic polymorphism
+one function in parent class and one in child class
+same name and signature
+only that function can call where is define in a class of the given object.
+
+Operator overloading
+. :: ?: sizeof can not be overloaded
+:: scope operator
+
+void operator -(){
+a =-a;
+b=-b;
+}
+
+this and super keyword
+
+this keyword to acces class variable 
+this->f1;
+or s.f1;
+
+---------------------inheritence
+class Base{
+public: 
+	void display(){
+		cout<<"case class"<<endl;
+	}
+};
+class Child: Public Base{
+	
+};
+int main(){
+	child c;
+	c.display();
+      return 0;
+}
+
+type of inheritence
+1.single inheritence
+2.multi level inheritence
+3.multiple inheritence
+4.hierarchical inheritence
+5.hybrid inheritence
+
+----------------------encapsulation
+wrapping of data member and member funtion in a class is called encapsulation
+
+class is user defined data type which is nothing but thr blueprint of the object
+
+Abstraction
+it refers to hiding complex things and show only the functionalities
+
+an abstract class is a class which one pure virtual function
+
+virtual void display()=0; provide the body in child class
+
+class Example{
+public:
+	virtual void display()=0;//pure virtual function
+	virtual void fun();// virtual function
+};
+
+class child: public Example{
+	void display(){
+		
+	}
+};
+
+-----------constructor
+
+
+
+
+

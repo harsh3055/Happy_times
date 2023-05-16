@@ -1,0 +1,150 @@
+Server Folder
+
+Body parser: enable us to send post request;
+cors: enable cross origin req
+express : framework for backend
+mongoose: to create models for our posts
+Nodemon: nodemon will keep the server running and updating the changes;
+
+instead of using require to get the dependency we can now use import react from 'react'
+ in the backend what we have to do is 
+go in the package json 
+add below the "main" : "type": "module"
+
+-------------------------index.js--------------------------------------------------
+            import all the library
+
+            initialize the express app 
+                const app = express();
+
+            app.use(bodyParser.json({limit: "30mb", extended: true}));
+            app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
+
+            app.use(cors());
+
+        ----------------------------------DATABASE---------------------------------------- 
+            we are using the cloud version of mongodb i.e, atlas
+            const CONNECTION_URL = PASTE THE LINK YOU GET FORM THE atlas    
+            now we need port 
+            Port= process.env.PORT || 5000;
+
+
+            now connecting the database with the help of moongoos
+            mongoose takes 2 parameter one is connection url and second id obejst with all the options
+            moongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true}) 
+            this will return a promise so we do'
+            .then(()=> app.listen(PORT , ()=>CONSOLE.LOG(`SERVER ON RUNNING ON PORT: ${PORT}`)))// LISTEN accept two parameter one is port and th callback function
+            .catch((error)=>cosole.log(error.message));
+
+
+            moongoose.set('useFindAndModify', false);
+            now we are connected to the database;
+
+
+----------------------------------------ROUTES-----------------------------------------
+            CREATE a new folder called routes with a file names as posts.js
+            import the express
+
+            set the router i.e, const router = express.Router();
+
+            get have path and callback funtion
+            router.get('/', (req, res)=>{
+                res.send("this is get req")
+
+            });
+            export default router;
+
+            now go in the index js and import
+            import postRoutes from './routes/posts.js'
+
+            app.use('/posts', postRoutes) what is says it every routes in the postRoutes is going to start with the /posts i.e localhost:5000/posts
+
+            folder structure
+            controller-> posts.js
+
+            router.get('/', (req, res)=>{
+                res.send("this is get req")
+
+            });
+
+            in the controller we we make the separate the call back funtion which we are using in the routes->posts.js files
+            so what we getis 
+            router.get('/', getPosts);
+            and the getPosts will bef
+
+            export const getPosts = (req, res)=>{
+                res.send('happy times')
+            }
+            and import {getPosts} from '../controllers/posts.js' in node we have to do the .js but in react we dont have to
+
+------------------------------creating models for the post-----------------------------
+            create a new folder named models
+            create a file postMessage.js
+
+            import mongoose from 'mongoose'
+
+            making the schema
+            const postSchema = mongoose.Schema({
+                title: String, 
+                message: String, 
+                creator: String,
+                tags: [String],
+                selectedFile: String, // base64 convert image to text
+                likecount: {
+                    type: number,
+                    default: 0
+                }
+                createdAT: {
+                    type: Date, 
+                    default: new Date()
+                }
+            });
+
+            now we have the schema we now turn it into the model
+
+            const PostMessage = mongoose.model('PostMessage', postSchema);
+            export default PostMessage; // on here we can use the command like find update delete etc
+
+
+--------------------------------adding more route as the mongoose model is done-------------------------------
+            in routes folder
+            router.post('/', createPost);
+
+            in controllers 
+
+            export const createPost=(req, res)=>{
+                res.send("post created")
+            }
+
+            now for the real deal we have to impor the mongoose model from the models folder
+            import PostMessage from '../models/postMessage.js';
+
+            ecery call back funstion will have try and catch block
+
+            export const getPosts = aync (req, res)=> {
+                try{
+                    const postMessages = await PostMessage.find();
+                    console.log(postMesasages);
+                    res.status(200).json(postMessages);
+                }
+                catch (error){
+                    res.status(404).json({message: error.message});
+
+                }
+            }
+
+            to create a post 
+            
+            export const createPost = async (req, res)=> {
+                const post = req.body;
+                const newPost = new PostMessage(post);
+            try{
+            await newPost.save();
+            res.status(201).json(newPost);
+            }
+            catch (error){
+            res.status(409).json({message:error.message} )
+            }
+            }
+
+now we want the data to create a new post for that we will switch to client for making form and sending the data to backend
