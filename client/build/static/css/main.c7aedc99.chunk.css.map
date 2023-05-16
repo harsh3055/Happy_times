@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css"],"names":[],"mappings":"AAAA,KACI,wBAAoC,CACpC,wDAA4C","file":"main.c7aedc99.chunk.css","sourcesContent":["body {\n    background-color: rgba(0,183,255, 1);\n    background-image: url('images/exposed.jpg');}"]}

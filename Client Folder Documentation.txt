@@ -1,0 +1,142 @@
+Client Folder
+
+axios: to make the api request
+moment js: library for working with time and date
+react-file-base64 : to convert our images
+redux and redux-thunk: for asynchronus actions using redux
+
+
+
+also change the script to : "start": "nodemon index.js"
+
+
+
+now lets make components 
+so make a components folder
+    make Posts folder
+        make Posts.js file
+        make styles.js file
+        make folder Post
+            make Post.js file
+            make style.js file
+    make Form folder
+        make Form.js file
+        make styles.js file 
+
+make two grid one for Posts components and one for forms components
+
+in posts components
+import post  and make as many post;
+
+
+-------------------------calls to the api-----------------------------
+in the client we will crete a folder named api
+make index.js file
+import axios from 'axios';
+
+const url = 'http://localhost:5000/posts';
+export const fetchPosts = ()=> axios.get(url);
+
+all the action to  out backend must be done through redux so we will dispatch those action
+
+for that we will create a folder called actions 
+    make a file posts.js
+and a folder call reducers
+    make a file index.js
+     make a file posts.js
+
+to initalize redux we will have to go to index.js which have app components
+import {Provider} from 'react-redux' // keep track of that store which is a global state that
+                                        we can access anywhere within the app , we didnt need to be in parent component and child components 
+import {createStore, applyMiddleware, compose} from 'redux'
+import thunk from 'reducx-thunk'
+now we have to create a store
+
+const store = createStore(reducers, compose(applyMiddleware(thunk)));// we will define reducers in that folder
+
+import reducers from '/reducers'
+
+    -----reducers folder/ index.js----
+    import { combineReducers } from 'redux'
+
+    impoert posts from './posts.js'
+
+    export default combineReducers({
+        posts,
+    });
+
+reducer: these are the function which take state and action as the input and based on the action it changes the state or return something
+ 
+ const reducer = (state, action) =>{
+    if(action.type === 'CRETAE')
+        return something
+ }
+ there will be multiple if statement so  we prefer switch statement
+
+state must be equal to somthing
+
+const reducers = (state=[], action)=>{
+    switch(action.type){
+
+        case 'FETCH_ALL':
+            return state;
+        case 'CREATE':
+            return state;
+    }
+}
+
+for state we have posts so chagne states to post
+
+we will export defalut the posts.js reducers into index.js as posts
+    -----reducers folder/ index.js----
+
+    import { combineReducers } from 'redux'
+
+    impoert posts from './posts.js'// this is the reducers
+
+    export default combineReducers({
+        posts: posts, since key valye are same so we can put one
+        
+    });
+    export default combineReducers({posts});
+
+    now we wrap our app component in the provider components
+    <provider store = {store}> 
+        <app/> 
+    <provider/>
+
+------------------in app.js-------------
+import useEffect from rect and {useDispatch} from 'react-redux'
+
+now in app component 
+const dispatch = useDispatch();
+
+useEffect(()=>{
+    dispatch(),
+},[])
+
+now import {getposts} from action
+useEffect(()=>{
+    dispatch(getPosts());
+},[dispatch])
+
+ -------------exporting getposts from the action----------------
+ in action import * as api from '../api';
+
+action creators
+
+const getPosts =() => {
+    const action = {type: 'FETCH_ALL', payload: []}
+
+    return action
+}
+
+ui make action ->> then in action we fetch req using api from the backend and dispatch that data into the store witth key
+so to get the data we can use useSelector hooks to get the data
+
+now after setting all this
+
+lets crete the form componnets to save the data in the database
+after creating the form components we will make onsubmit funtion in which we will dispatch the action with the postdata which will be a state variable
+after that action will use dispatch to modifier and modify the post content or add them 
+so its working -------------------------------------------------
